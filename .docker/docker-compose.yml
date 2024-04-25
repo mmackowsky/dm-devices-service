@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  dm-devices-service:
+    build:
+      context: ../
+      dockerfile: .docker/Dockerfile
+    command: bash -c "poetry run python src/main.py"
+    container_name: dm-devices-service
+    volumes:
+      - .:/dm-devices-service
+    ports:
+      - "8400:8400"
+    depends_on:
+      db-dm-devices-service:
+        condition: service_healthy
+
+  db-dm-devices-service:
+    container_name: db-dm-devices-service
+    image: postgres:15
+    volumes:
+      - ./data/db-dm-devices-service:/var/lib/postgresql/data
+    env_file:
+      - ../.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 30s
+      retries: 6
