@@ -15,7 +15,7 @@ db = SessionLocal()
 
 
 @app.post("/api/devices", status_code=status.HTTP_201_CREATED)
-async def create_device(device_form: DeviceForm, request: Request):
+async def add_device(device_form: DeviceForm, request: Request):
     name = db.query(Device).filter(Device.name == device_form.name).first()
     if name:
         raise HTTPException(
