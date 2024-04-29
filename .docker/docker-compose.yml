@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   dm-devices-service:
     build:
@@ -9,6 +7,10 @@ services:
     container_name: dm-devices-service
     volumes:
       - .:/dm-devices-service
+    env_file:
+      - /.env
+    environment:
+      - DATABASE_URL=${SQLALCHEMY_DATABASE_URL}
     ports:
       - "8400:8400"
     depends_on:
@@ -16,7 +18,7 @@ services:
         condition: service_healthy
 
   db-dm-devices-service:
-    container_name: db-dm-devices-service
+    container_name: db-devices-service
     image: postgres:15
     volumes:
       - ./data/db-dm-devices-service:/var/lib/postgresql/data
