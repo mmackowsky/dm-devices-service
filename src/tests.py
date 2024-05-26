@@ -74,7 +74,7 @@ class TestEnergyAPI(unittest.TestCase):
 
     def test_delete_device(self):
         response = self.client.delete("/api/devices/1")
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/json")
 
 
