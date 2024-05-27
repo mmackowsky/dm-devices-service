@@ -32,7 +32,7 @@ def override_get_db():
         db.close()
 
 
-class TestEnergyAPI(unittest.TestCase):
+class TestDevicesAPI(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         Base.metadata.create_all(bind=engine)
